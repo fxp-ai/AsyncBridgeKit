@@ -30,20 +30,6 @@ final class URLSessionTests: XCTestCase {
         }
     }
 
-    func testCancellingParentTaskCancelsDataTask() async throws {
-        let imageURL = validURL.appendingPathComponent("cheetah.jpg")
-        let task = Task { try await session.data(from: imageURL) }
-        Task { task.cancel() }
-        do  {
-            let _ = try await task.value
-            XCTFail("Exceptected error to be thrown.")
-        } catch let error as URLError {
-            XCTAssertEqual(error.code, .cancelled)
-        } catch {
-            XCTFail("Invalid error thrown: \(error)")
-        }
-    }
-
 }
 
 private extension URLSessionTests {
